@@ -1,5 +1,6 @@
 package com.example.videocallapp
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.webkit.PermissionRequest
@@ -44,13 +45,14 @@ class CallActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call)
 
+        println("성공 :onCreate ")
         initID()
 
         username = intent.getStringExtra("username")!!
 
         //파이어 베이스에서 불러와야함
 
-       initDatabase();
+       initDatabase()
 
 
 
@@ -78,6 +80,8 @@ class CallActivity : AppCompatActivity() {
         firebaseRef.child("A").child("test").setValue("success")
         firebaseRef.child("B").child("test").setValue("success")
         firebaseRef.child("C").child("test").setValue("success")
+
+        println("성공: initID ")
     }
 
     //리스트뷰 업데이트
@@ -85,7 +89,7 @@ class CallActivity : AppCompatActivity() {
  //       firebaseRef = firebaseRef.getReference("child 이름") // 변경값을 확인할 child 이름
 
 
-
+        println("성공: initDatabase ")
 
         firebaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -141,6 +145,9 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun initList() {
+
+        println("성공: initList ")
+
         val listview = findViewById(R.id.IdListview) as ListView
      //   println("성공성공 list2  ${LIST_MENU[0]}")
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
@@ -151,7 +158,7 @@ class CallActivity : AppCompatActivity() {
 
                 // get TextView's Text.
                 val strText = parent.getItemAtPosition(position) as String
-                println("성공성공 선택한 자식  $strText")
+              //  println("성공성공 선택한 자식  $strText")
                 friendsUsername=strText;
                 sendCallRequest()
             }
@@ -160,13 +167,12 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun sendCallRequest() {
+        println("성공: sendCallRequest ")
         if (!isPeerConnected) {
             Toast.makeText(this, "You're not connected. Check your internet", LENGTH_LONG).show()
             return
         }
-      //  firebaseRef.child(nameA)//.child("incoming").setValue(null)
         firebaseRef.child(friendsUsername).child("incoming").setValue(username)
-       // firebaseRef.child(nameA).child("incoming").setValue("")
         firebaseRef.child(friendsUsername).child("isAvailable").addValueEventListener(object :
             ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
@@ -184,6 +190,7 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun listenForConnId() {
+        println("성공: listenForConnId ")
         firebaseRef.child(friendsUsername).child("connId").addValueEventListener(object :
             ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
@@ -198,8 +205,9 @@ class CallActivity : AppCompatActivity() {
         })
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
-
+        println("성공: setupWebView ")
         // 웹뷰한테 ask한다 allow 할것인지(웹페이지)
         webView.webChromeClient = object: WebChromeClient() {
             override fun onPermissionRequest(request: PermissionRequest?) { // for this permission!
@@ -215,6 +223,7 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun loadVideoCall() {
+        println("성공: loadVideoCall ")
         val filePath = "file:android_asset/call.html"  //html 불러오기!
         webView.loadUrl(filePath) // url(html) load한다
 
@@ -228,8 +237,9 @@ class CallActivity : AppCompatActivity() {
     var uniqueId = ""
 
     private fun initializePeer() {
-
+        println("성공: initializePeer ")
         uniqueId = getUniqueID()
+        println("성공 유니크아이디 : $uniqueId")
 
         callJavascriptFunction("javascript:init(\"${uniqueId}\")")
         firebaseRef.child(username).child("incoming").addValueEventListener(object :
@@ -245,6 +255,7 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun onCallRequest(caller: String?) {
+        println("성공: onCallRequest ")
         if (caller == null) return
 
         callLayout.visibility = View.VISIBLE
@@ -270,6 +281,7 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun switchToControls() {
+        println("성공: switchToControls ")
         inputLayout.visibility = View.GONE
         listviewlayout.visibility = View.GONE
         callControlLayout.visibility = View.VISIBLE
@@ -277,24 +289,32 @@ class CallActivity : AppCompatActivity() {
 
 
     private fun getUniqueID(): String {
+        println("성공: getUniqueID() ")
         return UUID.randomUUID().toString()  //유니크 아이디를 랜덤으로 만들어서 return 한다
     }
 
     private fun callJavascriptFunction(functionString: String) {
+        println("성공: callJavascriptFunction ")
         webView.post { webView.evaluateJavascript(functionString, null) }
     }
 
 
     fun onPeerConnected() {
+        println("성공:onPeerConnected ")
         isPeerConnected = true  // 자바스크립트 인터페이스에서 받아오는 녀석
     }
 
     override fun onBackPressed() {
+        println("성공: onBackPressed ")
         finish()
     }
 
     override fun onDestroy() {
-        firebaseRef.child(username).setValue(null)
+        println("성공: onDestroy ")
+      //  firebaseRef.child(username).setValue(null)
+        firebaseRef.child(username).child("incoming").setValue(null)
+        firebaseRef.child(username).child("connId").setValue(null)
+        firebaseRef.child(username).child(" isAvailable").setValue(null)
         webView.loadUrl("about:blank")
         super.onDestroy()
     }
