@@ -37,13 +37,8 @@ class CallActivity : AppCompatActivity() {
     var isAudio = true
     var isVideo = true
 
-    //리스트뷰
-   // val LIST_MENU = arrayOfNulls<String>(5)//arrayOf("LIST1", "LIST2", "LIST3")
     val LIST_MENU=Array<String>(5,{""})
-    //val LIST_MENU = arrayOf("LIST1", "LIST2", "LIST3")
-    //val listview = findViewById(R.id.IdListview) as ListView
-   // val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
-    //private val adapter: ArrayAdapter<String>? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
