@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "408930023926",
+    "project_id": "android-video-call-fb356",
+    "storage_bucket": "android-video-call-fb356.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408930023926:android:b51c2c595d836e07952fd7",
+        "android_client_info": {
+          "package_name": "com.example.videocallapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408930023926-l1idrqrstbjfml2udqpn10m3omks0nlq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwDgHFd5lNqEbAm4TYc6sOz_0c8QGcF-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408930023926-l1idrqrstbjfml2udqpn10m3omks0nlq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
