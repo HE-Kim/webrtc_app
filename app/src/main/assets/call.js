@@ -13,7 +13,7 @@ let peer //잘은 모르겠지만 peerjs.js파일에 존재하는 녀석..!
 // 웹의 콘솔에서 우리가 init("A")로 입력하면 peerjs서버에서 클라이언트 연결되었다고 할때 그것!
 function init(userId) {
     peer = new Peer(userId, {
-        host: '192.168.0.57',
+        host: '10.15.113.231',
         port: 9000,
         path: '/videocallapp'
     })
@@ -33,7 +33,8 @@ function listen() {
         navigator.getUserMedia({
             audio: true, 
             video: true
-        }, (stream) => { // callbackfun이 주는 스트림림            localVideo.srcObject = stream
+        }, (stream) => { // callbackfun이 주는 스트림림
+            localVideo.srcObject = stream
             localStream = stream
 
             //답장

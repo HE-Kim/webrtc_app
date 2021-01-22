@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.videocallapp">
+    package="com.example.callapp">
 
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"> <!-- http, https 어쩌구를 위해-->
-        <activity android:name=".CallActivity"
+        <activity android:name="com.example.callapp.CallActivity"
             android:theme="@style/AppTheme.fullscreen"/>
-        <activity android:name=".MainActivity">
+        <activity android:name="com.example.callapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

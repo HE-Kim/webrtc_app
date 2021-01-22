@@ -1,4 +1,4 @@
-package com.example.videocallapp
+package com.example.callapp
 
 import org.junit.Test
 

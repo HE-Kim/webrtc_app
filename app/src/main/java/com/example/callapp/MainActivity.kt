@@ -1,4 +1,4 @@
-package com.example.videocallapp
+package com.example.callapp
 
 import android.Manifest
 import android.content.Intent
@@ -6,13 +6,9 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
-import com.google.firebase.database.ktx.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 
 

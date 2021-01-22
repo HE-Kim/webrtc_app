@@ -1,12 +1,9 @@
-package com.example.videocallapp
+package com.example.callapp
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.webkit.PermissionRequest
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.ListView
@@ -20,7 +17,6 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_call.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class CallActivity : AppCompatActivity() {
 
@@ -28,7 +24,6 @@ class CallActivity : AppCompatActivity() {
     var username = ""
     var friendsUsername = ""
 
-    var nameA="TEST"
 
     var isPeerConnected = false
 
