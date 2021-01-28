@@ -23,6 +23,7 @@ class CallActivity : AppCompatActivity() {
     
     var username = ""
     var friendsUsername = ""
+    var addUsername=""
 
 
     var isPeerConnected = false
@@ -33,6 +34,7 @@ class CallActivity : AppCompatActivity() {
     var isAudio = true
     var isVideo = true
 
+
     val LIST_MENU=Array<String>(5,{""})
 
 
@@ -41,19 +43,24 @@ class CallActivity : AppCompatActivity() {
         setContentView(R.layout.activity_call)
 
         println("성공 :onCreate ")
-        initID()
+
 
         username = intent.getStringExtra("username")!!
+        if(username!="") {
+            firebaseRef = Firebase.database.getReference("$username")
+        }
+        // firebaseRef = Firebase.database.getReference("$username")
 
         //파이어 베이스에서 불러와야함
-
+        initID()
        initDatabase()
 
 
 
         callBtn.setOnClickListener {
-            friendsUsername = friendNameEdit.text.toString()
-            sendCallRequest()
+            addUsername = friendNameEdit.text.toString()
+            firebaseRef.child("$addUsername").child("test").setValue("success")
+         //   sendCallRequest()
         }
 
         toggleAudioBtn.setOnClickListener {
@@ -75,7 +82,7 @@ class CallActivity : AppCompatActivity() {
         firebaseRef.child("A").child("test").setValue("success")
         firebaseRef.child("B").child("test").setValue("success")
         firebaseRef.child("C").child("test").setValue("success")
-
+        firebaseRef.child("TEST").setValue(null)
         println("성공: initID ")
     }
 
@@ -95,7 +102,7 @@ class CallActivity : AppCompatActivity() {
                // val mutableList: MutableList<String> = mutableListOf<String>("kildong","Dooly","Chelsu")
                 val mutableList: MutableList<String> = mutableListOf<String>(value.keys.toString())
                 val firlist = mutableList[0][1] // 1=A/ 2=B/3=C 이런 식 일 듯  //[==0
-
+                println("성공성공 value  $mutableList")
                /* LIST_MENU.set(0,"${mutableList[0][1]}") //A +3씩
                 LIST_MENU.set(1,"${mutableList[0][4]}") //B
                 LIST_MENU.set(2,"${mutableList[0][7]}") //C*/
@@ -113,9 +120,9 @@ class CallActivity : AppCompatActivity() {
                     k += 3
                     j++
                 }
-/*
-                println("성공성공 value  $value")
-                println("성공성공 val(key)  $val2")
+
+
+/*                println("성공성공 val(key)  $val2")
                 println("성공성공 mutableList  $mutableList")
                 println("성공성공 firlist  $firlist")
                 println("성공성공 list  ${LIST_MENU[0]}")

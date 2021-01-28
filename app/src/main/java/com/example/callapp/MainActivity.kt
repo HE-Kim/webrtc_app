@@ -11,6 +11,7 @@ import com.google.firebase.ktx.initialize
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.database.ktx.database
 
+var username=""
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-       // setID()
+
 
         if (!isPermissionGranted()) {  //권한이 부여되었니?
             askPermissions() //true --> askPermisstions으로 ㄱㄱ
@@ -33,11 +34,17 @@ class MainActivity : AppCompatActivity() {
         Firebase.initialize(this) // 파이어베이스 initㅎㅏ는 녀석
 
         loginBtn.setOnClickListener {
-            val username = usernameEdit.text.toString()
+            username = usernameEdit.text.toString()
+            if(username!="")
+            {
+                setID()
+            }
+
             val intent = Intent(this, CallActivity::class.java)
             intent.putExtra("username", username)
             startActivity(intent)
         }
+
 
 
 
@@ -58,12 +65,19 @@ class MainActivity : AppCompatActivity() {
         return true // 연결 성공하면
     }
 
-    var firebaseRef = Firebase.database.getReference("users")
+   // var firebaseRef = Firebase.database.getReference("users")
+    var firebaseRef = Firebase.database.getReference("$username")
 
     private fun setID(){
        // firebaseRef.child(nameTest).child("test").setValue("success")
+        firebaseRef = Firebase.database.getReference("$username")
+        firebaseRef.child("TEST").setValue("success")
+
+        /*
         firebaseRef.child("A").child("test").setValue("success")
         firebaseRef.child("B").child("test").setValue("success")
         firebaseRef.child("C").child("test").setValue("success")
+        */
+
     }
 }
