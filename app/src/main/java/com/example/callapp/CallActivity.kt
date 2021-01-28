@@ -35,7 +35,8 @@ class CallActivity : AppCompatActivity() {
     var isVideo = true
 
 
-    val LIST_MENU=Array<String>(5,{""})
+  //  val LIST_MENU=Array<String>(5,{""})
+  val LIST_MENU: MutableList<String> = mutableListOf<String>("")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,9 +80,15 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun initID() {
-        firebaseRef.child("A").child("test").setValue("success")
+        if(username!="A")
+            firebaseRef.child("A").child("test").setValue("success")
+
+        if(username!="B")
         firebaseRef.child("B").child("test").setValue("success")
+
+        if(username!="C")
         firebaseRef.child("C").child("test").setValue("success")
+
         firebaseRef.child("TEST").setValue(null)
         println("성공: initID ")
     }
@@ -100,26 +107,25 @@ class CallActivity : AppCompatActivity() {
                 val value = snapshot.value as Map<*, *>
                 val val2=value.keys
                // val mutableList: MutableList<String> = mutableListOf<String>("kildong","Dooly","Chelsu")
-                val mutableList: MutableList<String> = mutableListOf<String>(value.keys.toString())
-                val firlist = mutableList[0][1] // 1=A/ 2=B/3=C 이런 식 일 듯  //[==0
+                val mutableList: MutableList<String> = mutableListOf<String>(value.keys.toString().replace(Regex("""[\[\]]"""),""))
+                //val firlist = mutableList[0][1] // 1=A/ 2=B/3=C 이런 식 일 듯  //[==0
                 println("성공성공 value  $mutableList")
+                println("성공성공 value ${mutableList[0]}")
                /* LIST_MENU.set(0,"${mutableList[0][1]}") //A +3씩
                 LIST_MENU.set(1,"${mutableList[0][4]}") //B
                 LIST_MENU.set(2,"${mutableList[0][7]}") //C*/
                 val countVal=value.size
                 var k=1
                 var j=0
-                for(i in 1..countVal)
-                {
-                    if(username=="${mutableList[0][k]}")
-                    {
-                        k += 3
-                        continue
-                    }
-                    LIST_MENU.set(j,"${mutableList[0][k]}")
-                    k += 3
-                    j++
-                }
+                val arr = mutableList[0].split(", ")
+
+                LIST_MENU.clear()
+                //LIST_MENU.remove("")
+                LIST_MENU.addAll(arr)
+                println("성공성공 addAll ${LIST_MENU}")
+
+               // println("성공성공 value ${arr} / ${arr[0]} / ${arr[1]} / ${arr[2]}")
+
 
 
 /*                println("성공성공 val(key)  $val2")
