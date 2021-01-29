@@ -35,16 +35,13 @@ class CallActivity : AppCompatActivity() {
     var isVideo = true
 
 
-  //  val LIST_MENU=Array<String>(5,{""})
+
   val LIST_MENU: MutableList<String> = mutableListOf<String>("")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call)
-
-        println("성공 :onCreate ")
-
 
         username = intent.getStringExtra("username")!!
         if(username!="") {
@@ -55,8 +52,6 @@ class CallActivity : AppCompatActivity() {
         //파이어 베이스에서 불러와야함
         initID()
        initDatabase()
-
-
 
         callBtn.setOnClickListener {
             addUsername = friendNameEdit.text.toString()
@@ -80,6 +75,8 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun initID() {
+
+        //임의로 넣은 값들, test 이후 변경 예정
         if(username!="A")
             firebaseRef.child("A").child("test").setValue("success")
 
@@ -90,52 +87,21 @@ class CallActivity : AppCompatActivity() {
         firebaseRef.child("C").child("test").setValue("success")
 
         firebaseRef.child("TEST").setValue(null)
-        println("성공: initID ")
+
     }
 
     //리스트뷰 업데이트
     private fun initDatabase() {
- //       firebaseRef = firebaseRef.getReference("child 이름") // 변경값을 확인할 child 이름
-
-
-        println("성공: initDatabase ")
-
         firebaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
-
                 val value = snapshot.value as Map<*, *>
-                val val2=value.keys
-               // val mutableList: MutableList<String> = mutableListOf<String>("kildong","Dooly","Chelsu")
                 val mutableList: MutableList<String> = mutableListOf<String>(value.keys.toString().replace(Regex("""[\[\]]"""),""))
-                //val firlist = mutableList[0][1] // 1=A/ 2=B/3=C 이런 식 일 듯  //[==0
-                println("성공성공 value  $mutableList")
-                println("성공성공 value ${mutableList[0]}")
-               /* LIST_MENU.set(0,"${mutableList[0][1]}") //A +3씩
-                LIST_MENU.set(1,"${mutableList[0][4]}") //B
-                LIST_MENU.set(2,"${mutableList[0][7]}") //C*/
-                val countVal=value.size
-                var k=1
-                var j=0
                 val arr = mutableList[0].split(", ")
 
                 LIST_MENU.clear()
-                //LIST_MENU.remove("")
                 LIST_MENU.addAll(arr)
-                println("성공성공 addAll ${LIST_MENU}")
 
-               // println("성공성공 value ${arr} / ${arr[0]} / ${arr[1]} / ${arr[2]}")
-
-
-
-/*                println("성공성공 val(key)  $val2")
-                println("성공성공 mutableList  $mutableList")
-                println("성공성공 firlist  $firlist")
-                println("성공성공 list  ${LIST_MENU[0]}")
-*/
-           //     println("성공성공 username  $username/${mutableList[0][1]}/${mutableList[0][2]}/${mutableList[0][3]}/${mutableList[0][4]}  ")
-
-                //println("성공성공 countval  $countVal")
                 initList()
             }
 
@@ -145,19 +111,12 @@ class CallActivity : AppCompatActivity() {
             }
 
         })
-
-        //println("성공성공 list2  ${LIST_MENU[0]}")
-      //  val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
-      //  listview.adapter = adapter
-
     }
 
     private fun initList() {
 
-        println("성공: initList ")
-
         val listview = findViewById(R.id.IdListview) as ListView
-     //   println("성공성공 list2  ${LIST_MENU[0]}")
+
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
         listview.adapter = adapter
 
@@ -166,7 +125,7 @@ class CallActivity : AppCompatActivity() {
 
                 // get TextView's Text.
                 val strText = parent.getItemAtPosition(position) as String
-              //  println("성공성공 선택한 자식  $strText")
+
                 friendsUsername=strText;
                 sendCallRequest()
             }
@@ -175,7 +134,6 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun sendCallRequest() {
-        println("성공: sendCallRequest ")
         if (!isPeerConnected) {
             Toast.makeText(this, "You're not connected. Check your internet", LENGTH_LONG).show()
             return
@@ -198,7 +156,6 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun listenForConnId() {
-        println("성공: listenForConnId ")
         firebaseRef.child(friendsUsername).child("connId").addValueEventListener(object :
             ValueEventListener {
             override fun onCancelled(error: DatabaseError) {}
@@ -215,7 +172,6 @@ class CallActivity : AppCompatActivity() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupWebView() {
-        println("성공: setupWebView ")
         // 웹뷰한테 ask한다 allow 할것인지(웹페이지)
         webView.webChromeClient = object: WebChromeClient() {
             override fun onPermissionRequest(request: PermissionRequest?) { // for this permission!
@@ -231,7 +187,6 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun loadVideoCall() {
-        println("성공: loadVideoCall ")
         val filePath = "file:android_asset/call.html"  //html 불러오기!
         webView.loadUrl(filePath) // url(html) load한다
 
@@ -245,9 +200,8 @@ class CallActivity : AppCompatActivity() {
     var uniqueId = ""
 
     private fun initializePeer() {
-        println("성공: initializePeer ")
         uniqueId = getUniqueID()
-        println("성공 유니크아이디 : $uniqueId")
+        println("유니크아이디 : $uniqueId")
 
         callJavascriptFunction("javascript:init(\"${uniqueId}\")")
         firebaseRef.child(username).child("incoming").addValueEventListener(object :
@@ -263,7 +217,6 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun onCallRequest(caller: String?) {
-        println("성공: onCallRequest ")
         if (caller == null) return
 
         callLayout.visibility = View.VISIBLE
@@ -289,7 +242,6 @@ class CallActivity : AppCompatActivity() {
     }
 
     private fun switchToControls() {
-        println("성공: switchToControls ")
         inputLayout.visibility = View.GONE
         listviewlayout.visibility = View.GONE
         callControlLayout.visibility = View.VISIBLE
@@ -297,28 +249,23 @@ class CallActivity : AppCompatActivity() {
 
 
     private fun getUniqueID(): String {
-        println("성공: getUniqueID() ")
         return UUID.randomUUID().toString()  //유니크 아이디를 랜덤으로 만들어서 return 한다
     }
 
     private fun callJavascriptFunction(functionString: String) {
-        println("성공: callJavascriptFunction ")
         webView.post { webView.evaluateJavascript(functionString, null) }
     }
 
 
     fun onPeerConnected() {
-        println("성공:onPeerConnected ")
         isPeerConnected = true  // 자바스크립트 인터페이스에서 받아오는 녀석
     }
 
     override fun onBackPressed() {
-        println("성공: onBackPressed ")
         finish()
     }
 
     override fun onDestroy() {
-        println("성공: onDestroy ")
       //  firebaseRef.child(username).setValue(null)
         firebaseRef.child(username).child("incoming").setValue(null)
         firebaseRef.child(username).child("connId").setValue(null)
