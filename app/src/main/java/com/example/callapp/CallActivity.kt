@@ -94,13 +94,17 @@ class CallActivity : AppCompatActivity() {
     private fun initDatabase() {
         firebaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                //값이 변경된게 있으면 database의 값이 갱신되면 자동 호출된다.
-                val value = snapshot.value as Map<*, *>
-                val mutableList: MutableList<String> = mutableListOf<String>(value.keys.toString().replace(Regex("""[\[\]]"""),""))
-                val arr = mutableList[0].split(", ")
-
                 LIST_MENU.clear()
-                LIST_MENU.addAll(arr)
+
+                val children = snapshot.children.iterator()
+                var key:String?
+                while (children.hasNext()) { // 다음 값이 있으면
+                    key = children.next().key // 다음 데이터 반환
+                    if (!key.isNullOrEmpty() && username != key && LIST_MENU.indexOf(key) == -1) {
+                       // userList.add(key)
+                        LIST_MENU.add(key)
+                    }
+                }
 
                 initList()
             }
@@ -111,6 +115,10 @@ class CallActivity : AppCompatActivity() {
             }
 
         })
+
+
+
+
     }
 
     private fun initList() {
