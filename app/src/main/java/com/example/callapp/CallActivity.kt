@@ -36,12 +36,15 @@ class CallActivity : AppCompatActivity() {
 
 
 
-  val LIST_MENU: MutableList<String> = mutableListOf<String>("")
-
+    val LIST_MENU: MutableList<String> = mutableListOf<String>("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_call)
+
+        val listview = findViewById<ListView>(R.id.IdListview)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
+        listview.adapter = adapter
 
         username = intent.getStringExtra("username")!!
         if(username!="") {
@@ -49,9 +52,9 @@ class CallActivity : AppCompatActivity() {
         }
         // firebaseRef = Firebase.database.getReference("$username")
 
-        //파이어 베이스에서 불러와야함
+
         initID()
-       initDatabase()
+        initDatabase(listview, adapter)
 
         callBtn.setOnClickListener {
             addUsername = friendNameEdit.text.toString()
@@ -91,29 +94,27 @@ class CallActivity : AppCompatActivity() {
     }
 
     //리스트뷰 업데이트
-    private fun initDatabase() {
+    private fun initDatabase(listview: ListView, adapter: ArrayAdapter<String>) {
         firebaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 LIST_MENU.clear()
-
+              //  LIST_MENU.remove("")
                 val children = snapshot.children.iterator()
                 var key:String?
+
                 while (children.hasNext()) { // 다음 값이 있으면
                     key = children.next().key // 다음 데이터 반환
                     if (!key.isNullOrEmpty() && username != key && LIST_MENU.indexOf(key) == -1) {
-                       // userList.add(key)
                         LIST_MENU.add(key)
                     }
                 }
-
-                initList()
+               
+                initList(listview, adapter)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 println("Failed to read value.")
-
             }
-
         })
 
 
@@ -121,20 +122,20 @@ class CallActivity : AppCompatActivity() {
 
     }
 
-    private fun initList() {
-
-        val listview = findViewById(R.id.IdListview) as ListView
+    private fun initList(listview: ListView, adapter: ArrayAdapter<String>) {
+/*
+        val listview = findViewById<ListView>(R.id.IdListview)
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, LIST_MENU)
-        listview.adapter = adapter
 
+        listview.adapter = adapter
+*/
+        adapter.notifyDataSetChanged()
         listview.onItemClickListener = object : AdapterView.OnItemClickListener {
             override fun onItemClick(parent: AdapterView<*>, v: View, position: Int, id: Long) {
-
                 // get TextView's Text.
                 val strText = parent.getItemAtPosition(position) as String
-
-                friendsUsername=strText;
+                friendsUsername=strText
                 sendCallRequest()
             }
         }
