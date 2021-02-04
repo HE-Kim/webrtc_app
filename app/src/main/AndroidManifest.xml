@@ -2,12 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.callapp">
 
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-
 
     <application
         android:allowBackup="true"
@@ -16,10 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"> <!-- http, https 어쩌구를 위해-->
-        <activity android:name="com.example.callapp.CallActivity"
-            android:theme="@style/AppTheme.fullscreen"/>
-        <activity android:name="com.example.callapp.MainActivity">
+        android:usesCleartextTraffic="true">
+        <activity android:name=".joinActivity"></activity>
+        <!-- http, https 어쩌구를 위해 -->
+        <activity
+            android:name=".CallActivity"
+            android:theme="@style/AppTheme.fullscreen" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

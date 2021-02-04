@@ -33,6 +33,20 @@ class MainActivity : AppCompatActivity() {
 
         Firebase.initialize(this) // 파이어베이스 initㅎㅏ는 녀석
 
+        joinBtn.setOnClickListener {
+           /* username = usernameEdit.text.toString()
+            if(username!="")
+            {
+                setID()
+            }*/
+
+            val intent = Intent(this, joinActivity::class.java)
+           // intent.putExtra("username", username)
+            startActivity(intent)
+        }
+
+
+
         loginBtn.setOnClickListener {
             username = usernameEdit.text.toString()
             if(username!="")

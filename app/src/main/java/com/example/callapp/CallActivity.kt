@@ -24,7 +24,7 @@ class CallActivity : AppCompatActivity() {
     var username = ""
     var friendsUsername = ""
     var addUsername=""
-
+    var uniqueId = ""
 
     var isPeerConnected = false
 
@@ -55,6 +55,9 @@ class CallActivity : AppCompatActivity() {
 
         initID()
         initDatabase(listview, adapter)
+        uniqueId = getUniqueID()
+        firebaseRef.child("UUID").setValue(uniqueId)
+
 
         callBtn.setOnClickListener {
             addUsername = friendNameEdit.text.toString()
@@ -81,13 +84,19 @@ class CallActivity : AppCompatActivity() {
 
         //임의로 넣은 값들, test 이후 변경 예정
         if(username!="A")
-            firebaseRef.child("A").child("test").setValue("success")
+            firebaseRef.child("friends").child("A").child("test").setValue("success")
+   //     firebaseRef.child("friends").child("test").setValue("success")
 
         if(username!="B")
-        firebaseRef.child("B").child("test").setValue("success")
+        firebaseRef.child("friends").child("B").child("test").setValue("success")
 
         if(username!="C")
-        firebaseRef.child("C").child("test").setValue("success")
+        firebaseRef.child("friends").child("C").child("test").setValue("success")
+
+        firebaseRef.child("info").child("outgoing").setValue("none") // 발신
+        firebaseRef.child("info").child("receive").setValue("none") // 수신
+        firebaseRef.child("info").child("isAvailable").setValue(true) // 연결 가능 여부
+        firebaseRef.child("info").child("name").setValue("$username") // 이름 = username
 
         firebaseRef.child("TEST").setValue(null)
 
@@ -95,7 +104,7 @@ class CallActivity : AppCompatActivity() {
 
     //리스트뷰 업데이트
     private fun initDatabase(listview: ListView, adapter: ArrayAdapter<String>) {
-        firebaseRef.addValueEventListener(object : ValueEventListener {
+        firebaseRef.child("friends").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 LIST_MENU.clear()
               //  LIST_MENU.remove("")
@@ -206,10 +215,10 @@ class CallActivity : AppCompatActivity() {
         }
     }
 
-    var uniqueId = ""
+
 
     private fun initializePeer() {
-        uniqueId = getUniqueID()
+       // uniqueId = getUniqueID()
         println("유니크아이디 : $uniqueId")
 
         callJavascriptFunction("javascript:init(\"${uniqueId}\")")
@@ -258,8 +267,11 @@ class CallActivity : AppCompatActivity() {
 
 
     private fun getUniqueID(): String {
+
         return UUID.randomUUID().toString()  //유니크 아이디를 랜덤으로 만들어서 return 한다
     }
+
+
 
     private fun callJavascriptFunction(functionString: String) {
         webView.post { webView.evaluateJavascript(functionString, null) }
