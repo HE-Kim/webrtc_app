@@ -15,12 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".joinActivity"></activity>
-        <!-- http, https 어쩌구를 위해 -->
+        <activity android:name=".Menubar"></activity>
+        <activity
+            android:name=".Home2"
+            android:label="@string/title_activity_home2" />
+        <activity android:name=".JoinActivity_2" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".joinActivity" /> <!-- http, https 어쩌구를 위해 -->
         <activity
             android:name=".CallActivity"
             android:theme="@style/AppTheme.fullscreen" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

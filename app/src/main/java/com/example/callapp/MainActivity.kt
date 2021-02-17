@@ -3,13 +3,17 @@ package com.example.callapp
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Paint
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
+import kotlinx.android.synthetic.main.activity_join.*
 import kotlinx.android.synthetic.main.activity_main.*
-import com.google.firebase.database.ktx.database
 
 var username=""
 
@@ -33,18 +37,25 @@ class MainActivity : AppCompatActivity() {
 
         Firebase.initialize(this) // 파이어베이스 initㅎㅏ는 녀석
 
-        joinBtn.setOnClickListener {
-           /* username = usernameEdit.text.toString()
-            if(username!="")
-            {
-                setID()
-            }*/
 
+        Join.setOnClickListener(View.OnClickListener {
+            // TextView 클릭될 시 할 코드작성
             val intent = Intent(this, joinActivity::class.java)
-           // intent.putExtra("username", username)
+            // intent.putExtra("username", username)
             startActivity(intent)
-        }
 
+        })
+        findid.setOnClickListener(View.OnClickListener {
+            // TextView 클릭될 시 할 코드작성
+
+            Toast.makeText(this, "서비스 준비중입니다.", Toast.LENGTH_SHORT).show();
+
+        })
+        findpw.setOnClickListener(View.OnClickListener {
+            // TextView 클릭될 시 할 코드작성
+            Toast.makeText(this, "서비스 준비중입니다.", Toast.LENGTH_SHORT).show();
+
+        })
 
 
         loginBtn.setOnClickListener {
@@ -54,8 +65,7 @@ class MainActivity : AppCompatActivity() {
                 setID()
             }
 
-            val intent = Intent(this, CallActivity::class.java)
-            intent.putExtra("username", username)
+            val intent = Intent(this, Menubar::class.java)
             startActivity(intent)
         }
 
@@ -63,6 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
     private fun askPermissions() {
         ActivityCompat.requestPermissions(this, permissions, requestcode)  // 외부저장소(카메라, 오디오)에 접근하려면 이걸 해여함!
@@ -95,3 +106,4 @@ class MainActivity : AppCompatActivity() {
 
     }
 }
+

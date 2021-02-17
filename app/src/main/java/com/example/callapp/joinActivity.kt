@@ -11,6 +11,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.activity_join.*
 import java.util.*
 
@@ -54,55 +55,6 @@ class joinActivity : AppCompatActivity() {
             userID_check()
             username_check()
             userPw_check()
-/*
-            if (userID == "")
-                Toast.makeText(this, "You did not enter ID", Toast.LENGTH_SHORT).show()
-            else {
-                firebaseRef.addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val children = snapshot.children.iterator()
-                        var key: String?
-
-                        while (children.hasNext()) { // 다음 값이 있으면
-                            key = children.next().key // 다음 데이터 반환
-                            overlapID = userID == key
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        println("Failed to read value.")
-                    }
-                })
-
-                if (overlapID == true)
-                    Toast.makeText(this, "Your ID is overlapped.", Toast.LENGTH_SHORT).show()
-                else
-                    firebaseRef = Firebase.database.getReference("$userID")
-
-            }
-*/
-            /*
-            if (username == "")
-                Toast.makeText(this, "You did not enter name", Toast.LENGTH_SHORT).show()
-            else
-                firebaseRef.child("info").child("username").setValue("$username")*/
-            /*
-                 if (userpw == "")
-                     Toast.makeText(this, "You did not enter password", Toast.LENGTH_SHORT).show()
-                 else
-                     firebaseRef.child("info").child("pw").setValue("$userpw")
-     */
-
-            // 그 다음 LOGIN page로 넘어가기 intent
-
-            /*
-            if (userID != "" && username != "" && userpw != "" && overlapID == false) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra("username", username)
-                startActivity(intent)
-            }
-            */
-
 
             if (check_id&&check_name&&check_pw) {
                 var UUID=UUID.randomUUID().toString()
@@ -110,15 +62,19 @@ class joinActivity : AppCompatActivity() {
                 firebaseRef.child("info").child("outgoing").setValue("none") // 발신
                 firebaseRef.child("info").child("receive").setValue("none") // 수신
 
-                val intent = Intent(this, MainActivity::class.java)
+                val intent = Intent(this, JoinActivity_2::class.java)
                 intent.putExtra("username", username)
                 startActivity(intent)
+
+
             }
 
 
         }
 
     }
+
+
 
 
     private fun userID_check() {

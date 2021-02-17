@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/home_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_neo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/gmarketsans_bold"
+            android:gravity="right"
+            android:text="NEO"
+            android:textColor="#2936C3"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:src="@drawable/ic_baseline_account_circle_24"
+          android:padding="10dp"
+            android:id="@+id/account_image"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@+id/text_neo"></ImageView>
+
+        <TextView
+            android:id="@+id/text3_hello"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/gmarketsans_medium"
+            android:text="반갑습니다!"
+            android:textColor="#565454"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            app:layout_constraintLeft_toRightOf="@+id/account_image"
+            app:layout_constraintTop_toBottomOf="@+id/text_neo"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/text3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:fontFamily="@font/gmarketsans_medium"
+            android:text="사용자님!"
+            android:textColor="#565454"
+            android:textSize="20dp"
+            android:textStyle="normal"
+            app:layout_constraintLeft_toRightOf="@+id/account_image"
+            app:layout_constraintTop_toBottomOf="@+id/text3_hello"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/PlusFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_plusfriend"
+            android:fontFamily="@font/gmarketsans_bold"
+            android:gravity="left"
+            android:padding="60dp"
+            android:text="등록된STB가 없습니다.\nSTB등록하기"
+            android:textColor="#ffffff"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/account_image"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/missedCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/missedcall"
+            android:drawableBottom="@drawable/ic_baseline_phone_missed_24"
+            android:drawablePadding="0dp"
+            android:fontFamily="@font/gmarketsans_bold"
+            android:padding="35dp"
+            android:text="부재중 0건\n"
+            android:textColor="#3F4770"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/recentCall"
+            app:layout_constraintTop_toBottomOf="@id/PlusFriend"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/recentCall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/recentcall"
+            android:drawableBottom="@drawable/ic_baseline_call_24"
+            android:drawablePadding="0dp"
+            android:fontFamily="@font/gmarketsans_bold"
+            android:padding="35dp"
+            android:text=" 최근통화  \n"
+            android:textColor="#3F4770"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintRight_toLeftOf="@id/missedCall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/PlusFriend"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/text_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/gmarketsans_medium"
+            android:text="즐겨찾기"
+            android:textColor="#565454"
+            android:textSize="16dp"
+            android:textStyle="normal"
+            app:layout_constraintRight_toLeftOf="@id/missedCall"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/missedCall"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/favorites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/favorites"
+
+            android:drawablePadding="0dp"
+            android:fontFamily="@font/gmarketsans_bold"
+            android:padding="35dp"
+            android:textColor="#3F4770"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_favorites"
+            tools:ignore="MissingConstraints" />
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+</RelativeLayout>
+

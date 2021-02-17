@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/ic_favorite"
+        android:icon="@drawable/ic_baseline_star_24"
+        android:title="즐겨찾기" />
+    <item
+        android:id="@+id/ic_friend"
+        android:icon="@drawable/ic_baseline_people_24"
+        android:title="모든 연락처" />
+    <item
+        android:id="@+id/ic_friendplus"
+        android:icon="@drawable/ic_baseline_person_add_24"
+        android:title="추가 등록" />
+
+</menu>
+

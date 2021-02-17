@@ -156,6 +156,8 @@ class CallActivity : AppCompatActivity() {
             Toast.makeText(this, "You're not connected. Check your internet", LENGTH_LONG).show()
             return
         }
+
+
         firebaseRef.child(friendsUsername).child("incoming").setValue(username)
         firebaseRef.child(friendsUsername).child("isAvailable").addValueEventListener(object :
             ValueEventListener {
@@ -170,8 +172,23 @@ class CallActivity : AppCompatActivity() {
             }
 
         })
+       //추가
+        sendCalling()
 
     }
+    //추가
+    private fun sendCalling() {
+        callingSomeoneLayout.visibility = View.VISIBLE
+        CallTxt.text = "Calling $friendsUsername..."
+
+        // reject 했을 때 incoming value를 없애야함
+        rejectBtn2.setOnClickListener {
+            firebaseRef.child(username).child("incoming").setValue(null)
+            callingSomeoneLayout.visibility = View.GONE
+        }
+
+    }
+
 
     private fun listenForConnId() {
         firebaseRef.child(friendsUsername).child("connId").addValueEventListener(object :
@@ -233,6 +250,7 @@ class CallActivity : AppCompatActivity() {
         })
 
     }
+
 
     private fun onCallRequest(caller: String?) {
         if (caller == null) return
