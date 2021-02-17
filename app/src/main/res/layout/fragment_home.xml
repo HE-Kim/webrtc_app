@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".joinActivity">
+
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity"
@@ -18,7 +25,7 @@
             android:id="@+id/text_neo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/gmarketsans_bold"
             android:gravity="right"
@@ -67,6 +74,8 @@
             app:layout_constraintTop_toBottomOf="@+id/text3_hello"
             tools:ignore="MissingConstraints" />
 
+
+
         <Button
             android:id="@+id/PlusFriend"
             android:layout_width="match_parent"
@@ -77,8 +86,8 @@
             android:background="@drawable/button_plusfriend"
             android:fontFamily="@font/gmarketsans_bold"
             android:gravity="left"
-            android:padding="60dp"
-            android:text="등록된STB가 없습니다.\nSTB등록하기"
+            android:padding="80dp"
+            android:text="STB등록하기"
             android:textColor="#ffffff"
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -90,8 +99,7 @@
             android:id="@+id/missedCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/missedcall"
             android:drawableBottom="@drawable/ic_baseline_phone_missed_24"
             android:drawablePadding="0dp"
@@ -101,8 +109,8 @@
             android:textColor="#3F4770"
             android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/recentCall"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/PlusFriend"
             tools:ignore="MissingConstraints" />
 
@@ -110,8 +118,7 @@
             android:id="@+id/recentCall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/recentcall"
             android:drawableBottom="@drawable/ic_baseline_call_24"
             android:drawablePadding="0dp"
@@ -121,8 +128,8 @@
             android:textColor="#3F4770"
             android:textSize="20dp"
             android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/missedCall"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/PlusFriend"
             tools:ignore="MissingConstraints" />
 
@@ -131,7 +138,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/gmarketsans_medium"
             android:text="즐겨찾기"
             android:textColor="#565454"
@@ -147,7 +154,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/favorites"
 
             android:drawablePadding="0dp"
@@ -171,4 +178,6 @@
 
 
 </RelativeLayout>
+
+</ScrollView>
 

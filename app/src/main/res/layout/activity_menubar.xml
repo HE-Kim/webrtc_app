@@ -20,13 +20,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="#FFFFFF"
+        android:background="@drawable/background"
         app:itemIconSize="25dp"
         app:itemIconTint="@drawable/item_color"
         app:itemTextColor="@drawable/item_color"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/navi_menu"
-        app:itemBackground="#FFFFFF"
         />
 
 </RelativeLayout>
