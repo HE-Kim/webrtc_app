@@ -8,34 +8,41 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_menubar.*
 import kotlinx.android.synthetic.main.fragment_phone_book.*
 
-class PhoneBookFragment : Fragment(){
+class PhoneBookFragment : Fragment(),BottomNavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var phoneBookFragment1: PhoneBookFragment1
     private lateinit var phoneBookFragment2: PhoneBookFragment2
     private lateinit var phoneBookFragment3: PhoneBookFragment3
 
 
-    companion object{
-        const val  TAG : String = "로그"
+    companion object {
+        const val TAG: String = "로그"
 
-        fun newInstance() : PhoneBookFragment {
+        fun newInstance(): PhoneBookFragment {
             return PhoneBookFragment()
 
         }
     }
+
     //메모리에 올라갔을 때
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG,"phoneBookFragment-onCreate() called")
+        Log.d(TAG, "phoneBookFragment-onCreate() called")
+
+        phoneBookFragment1 = PhoneBookFragment1.newInstance()
+        childFragmentManager.beginTransaction().add(R.id.fragment_frame2,phoneBookFragment1).commit();
+
     }
 
     // 프레그먼트를 안고 있는 엑티비에 붙었을 때
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.d(TAG,"phoneBookFragment-onAttach() called")
+        Log.d(TAG, "phoneBookFragment-onAttach() called")
     }
 
     override fun onCreateView(
@@ -43,8 +50,35 @@ class PhoneBookFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(TAG,"phoneBookFragment-onCreateView() called")
-        val view = inflater.inflate(R.layout.fragment_phone_book,container,false)
+        Log.d(TAG, "PhoneBookFragment-onCreateView() called")
+        val view = inflater.inflate(R.layout.fragment_phone_book, container, false)
+
         return view
     }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        Log.d(TAG,"phoneBookFragment - onNavigationItemSelected() called")
+        when(item.itemId){
+            R.id.ic_favorite -> {
+                Log.d(TAG,"phoneBookFragment - 즐겨찾기")
+                phoneBookFragment1 = PhoneBookFragment1.newInstance()
+                childFragmentManager.beginTransaction().add(R.id.fragment_frame2,phoneBookFragment1).commit()
+            }
+            R.id.ic_friend -> {
+                Log.d(Menubar.TAG,"phoneBookFragment - 모든연락처 클릭")
+                phoneBookFragment2 = PhoneBookFragment2.newInstance()
+                childFragmentManager.beginTransaction().add(R.id.fragment_frame2,phoneBookFragment2).commit();
+            }
+            R.id.ic_friendplus -> {
+                Log.d(Menubar.TAG,"phoneBookFragment - 추가등록 클릭")
+                phoneBookFragment3 = PhoneBookFragment3.newInstance()
+                childFragmentManager.beginTransaction().add(R.id.fragment_frame2,phoneBookFragment3).commit();
+            }
+
+        }
+
+        return true
+    }
+
+
 }

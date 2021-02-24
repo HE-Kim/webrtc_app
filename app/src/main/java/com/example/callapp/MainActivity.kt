@@ -58,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         })
 
 
+
+
         loginBtn.setOnClickListener {
             username = usernameEdit.text.toString()
             if(username!="")
@@ -65,7 +67,9 @@ class MainActivity : AppCompatActivity() {
                 setID()
             }
 
+
             val intent = Intent(this, Menubar::class.java)
+            intent.putExtra("username", username)
             startActivity(intent)
         }
 
