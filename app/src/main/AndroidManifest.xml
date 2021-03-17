@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.callapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -14,19 +15,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".Menubar"></activity>
-        <activity
-            android:name=".Home2"
-            android:label="@string/title_activity_home2" />
-        <activity android:name=".JoinActivity_2" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".joinActivity" /> <!-- http, https 어쩌구를 위해 -->
+        android:usesCleartextTraffic="true"
+        tools:ignore="Instantiatable">
+        <activity android:name=".ParingActivity"></activity>
+        <activity android:name=".Menubar" />
         <activity
             android:name=".CallActivity"
             android:theme="@style/AppTheme.fullscreen" />
+        <activity android:name=".JoinActivity_2" />
+        <activity android:name=".PhoneBookFragment3" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".joinActivity" /> <!-- http, https 어쩌구를 위해 -->
         <activity android:name=".LoadingActivity">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

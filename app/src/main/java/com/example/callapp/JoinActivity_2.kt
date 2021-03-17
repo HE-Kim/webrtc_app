@@ -25,9 +25,9 @@ class JoinActivity_2 : AppCompatActivity() {
 
        loginBtn3.setOnClickListener{
 
-            val intent = Intent(this, Menubar::class.java)
-            intent.putExtra("username", username)
-            startActivity(intent)
+           val intent = Intent(this, MainActivity::class.java)
+           intent.putExtra("username", username)
+           startActivity(intent)
 
         }
     }

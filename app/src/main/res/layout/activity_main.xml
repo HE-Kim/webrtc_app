@@ -62,7 +62,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_alignParentBottom="true"
-        android:id="@+id/intentLayout">
+        android:id="@+id/intentLayout"
+        android:gravity="center">
 
         <TextView
 
