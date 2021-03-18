@@ -18,6 +18,9 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_call.*
+import kotlinx.android.synthetic.main.activity_call.incomingCallTxt
+import kotlinx.android.synthetic.main.fragment_phone_book.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -27,8 +30,9 @@ class PhoneBookFragment2 : Fragment() {
     var username = ""
     var friendsUsername = ""
     var firebaseRef = Firebase.database.getReference("users")
+    var listCount = ""
+    private lateinit var phoneBookFragment: PhoneBookFragment
 
-    var arraylist: MutableList<String> = mutableListOf<String>("")
 
 
     companion object {
@@ -66,6 +70,8 @@ class PhoneBookFragment2 : Fragment() {
         val listview = view.findViewById<ListView>(R.id.IdListview)
 
         val editSearch = view.findViewById<View>(R.id.userIdEdit) as EditText
+
+
 
 
         val adapter = ArrayAdapter<String>(
@@ -130,6 +136,13 @@ class PhoneBookFragment2 : Fragment() {
                     }
                 }
 
+
+
+                listCount = LIST_MENU.count().toString()
+                val bundle = Bundle()
+                bundle.putString("listCount", listCount)
+                phoneBookFragment.setArguments(bundle)
+
                 initList(listview, adapter)
             }
 
@@ -159,10 +172,11 @@ class PhoneBookFragment2 : Fragment() {
                         .setMessage(friendsUsername+"님께 통화를 연결하시겠습니까?") // 제목 부분 (직접 작성)
                         .setPositiveButton("통화") { dialog, which ->
 
-                            // 버튼1 (직접 작성)
                             val intent = Intent(activity, CallActivity::class.java)
-                            intent.putExtra("friendUsername", friendsUsername)
+                            intent.putExtra("friendsUsername", friendsUsername)
                             intent.putExtra("username", username)
+                            println("테스트 CallActivity username: $username")
+                            println("테스트 friend name: $friendsUsername")
                             startActivity(intent)
 
 
@@ -171,7 +185,6 @@ class PhoneBookFragment2 : Fragment() {
                             "취소"
                         ) { dialog, which ->
 
-                            // 버튼2 (직접 작성)
                             dialog.dismiss()
 
                         }

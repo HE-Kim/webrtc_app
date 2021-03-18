@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_menubar.*
+import kotlinx.android.synthetic.main.activity_paring.view.*
 import kotlinx.android.synthetic.main.fragment_phone_book.*
 import kotlinx.android.synthetic.main.fragment_phone_book.view.*
 
@@ -19,6 +21,7 @@ class PhoneBookFragment : Fragment(),BottomNavigationView.OnNavigationItemSelect
     private lateinit var phoneBookFragment1: PhoneBookFragment1
     private lateinit var phoneBookFragment2: PhoneBookFragment2
     private lateinit var phoneBookFragment3: PhoneBookFragment3
+    var listCount = ""
 
 
 
@@ -38,6 +41,7 @@ class PhoneBookFragment : Fragment(),BottomNavigationView.OnNavigationItemSelect
 
         arguments?.let {
             username = it.getString("username").toString()
+            listCount = it.getString("listCount").toString()
         }
 
         Log.d(TAG, "username: ${username}")
@@ -60,9 +64,11 @@ class PhoneBookFragment : Fragment(),BottomNavigationView.OnNavigationItemSelect
         view.top_nav.setOnNavigationItemSelectedListener(this)
         phoneBookFragment2 = PhoneBookFragment2.newInstance()
         childFragmentManager.beginTransaction().add(R.id.fragment_frame2, phoneBookFragment2).commit()
+
         val bundle = Bundle()
         bundle.putString("username", username)
         phoneBookFragment2.setArguments(bundle)
+
 
         return view
     }
