@@ -34,7 +34,29 @@ import javax.net.ssl.*
 
 //data class Accepted(val accepted: HashMap<String, Friend>)
 //data class Friend(val success: Boolean, val message: String)
-
+interface CometChatFriendsService {
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    //@POST("/{value}?id={value_id}&passwd=user1234!&role=50&name=김하은100&contact1=010&contact2=3333&contact3=4444")
+    // @POST("/{value}?id={value_id}&passwd={userpw}&role=50&name={name}&contact1={contact1}&contact2={contact2}&contact3={contact3}")
+    @POST("/{value}?")
+    fun addFriend(
+        @Header("apikey") apiKey: String,
+        @Header("appid") appID: String,
+        @Body params: HashMap<String, List<String>>,
+        @Path("value") value: String,
+        @Query("id") id: String,
+        @Query("passwd") passwd: String,
+        @Query("role") role: String,
+        @Query("name") name: String,
+        @Query("contact1") contact1: String,
+        @Query("contact2") contact2: String,
+        @Query("contact3") contact3: String
+    )
+            : Call<Data>
+}
 class joinActivity : AppCompatActivity() {
 
     var firebaseRef = Firebase.database.getReference("users")
@@ -45,10 +67,15 @@ class joinActivity : AppCompatActivity() {
     var userID = ""
     var username = ""
     var userpw = ""
+    var userpw2 = ""
 
     var check_id = false
     var check_name = false
     var check_pw = false
+
+    var PhoneNum1=""
+    var PhoneNum2=""
+    var PhoneNum3=""
 
     val arrList: MutableList<String> = mutableListOf<String>("")
 
@@ -61,62 +88,96 @@ class joinActivity : AppCompatActivity() {
         val userIdEdit = findViewById<View>(R.id.userIdEdit) as EditText
         val usernameEdit = findViewById<View>(R.id.usernameEdit) as EditText
         val userPwEdit = findViewById<View>(R.id.userPwEdit) as EditText
+        val userPwEdit2 = findViewById<View>(R.id.userPWEdit2) as EditText
+        val userPhonenumber = findViewById<View>(R.id.userPhonenumber) as EditText
+
+
+
+
+
+
+
+
+
+        JoinBtn.setOnClickListener {
+            //edittext 값이 다 들어갔는지 확인
+            userID = userIdEdit.text.toString()
+            username = usernameEdit.text.toString()
+            userpw = userPwEdit.text.toString()
+            userpw2 = userPwEdit2.text.toString()
+
+            PhoneNum1=userPhonenumber.text.toString().substring(0,3)
+            PhoneNum2=userPhonenumber.text.toString().substring(3,7)
+            PhoneNum3=userPhonenumber.text.toString().substring(7,11)
+            check_id = false
+            check_name = false
+            check_pw = false
+
+          //  send()
+            userID_check()
+
+            //pw 일치 확인
+
+        }
+
+    }
+    private fun send() {
 
 
         //   (SSL_Activity.mContext as SSL_Activity).ssl_raw()
-            val cf = CertificateFactory.getInstance("X.509")
-            val caInput: InputStream = resources.openRawResource(R.raw.server)
-            var ca: Certificate? = null
-            try {
-                ca = cf.generateCertificate(caInput)
-                println("ca=" + (ca as X509Certificate?)!!.subjectDN)
-            } catch (e: CertificateException) {
-                e.printStackTrace()
-            } finally {
-                caInput.close()
+        val cf = CertificateFactory.getInstance("X.509")
+        val caInput: InputStream = resources.openRawResource(R.raw.server)
+        var ca: Certificate? = null
+        try {
+            ca = cf.generateCertificate(caInput)
+            println("ca=" + (ca as X509Certificate?)!!.subjectDN)
+        } catch (e: CertificateException) {
+            e.printStackTrace()
+        } finally {
+            caInput.close()
+        }
+        val keyStoreType = KeyStore.getDefaultType()
+        var keyStore = KeyStore.getInstance(keyStoreType)
+        keyStore.load(null, null)
+        if (ca == null) {
+
+        }
+        keyStore.setCertificateEntry("ca", ca)
+
+
+
+        val trustManagerFactory =
+            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        trustManagerFactory.init(keyStore)
+
+
+        val trustManagers: Array<TrustManager> = trustManagerFactory.trustManagers
+        check(!(trustManagers.size != 1 || trustManagers[0] !is X509TrustManager)) {
+            "Unexpected default trust managers:" + Arrays.toString(
+                trustManagers
+            )
+
+        }
+        val hostnameVerifier = HostnameVerifier { _, session ->
+            HttpsURLConnection.getDefaultHostnameVerifier().run {
+                verify("https://13.125.233.161:6443", session)
             }
-            val keyStoreType = KeyStore.getDefaultType()
-            var keyStore = KeyStore.getInstance(keyStoreType)
-            keyStore.load(null, null)
-            if (ca == null) {
+        }
+        val trustManager: X509TrustManager = trustManagers[0] as X509TrustManager
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
+        val sslSocketFactory = sslContext.socketFactory
+        val client1: OkHttpClient.Builder = OkHttpClient.Builder()
+            .sslSocketFactory(sslSocketFactory, trustManager)
 
-            }
-            keyStore.setCertificateEntry("ca", ca)
-
-
-
-            val trustManagerFactory =
-                TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-            trustManagerFactory.init(keyStore)
+        client1.hostnameVerifier(HostnameVerifier { hostname, session -> true })
 
 
-            val trustManagers: Array<TrustManager> = trustManagerFactory.trustManagers
-            check(!(trustManagers.size != 1 || trustManagers[0] !is X509TrustManager)) {
-                "Unexpected default trust managers:" + Arrays.toString(
-                    trustManagers
-                )
-
-            }
-            val hostnameVerifier = HostnameVerifier { _, session ->
-                HttpsURLConnection.getDefaultHostnameVerifier().run {
-                    verify("https://13.125.233.161:6443", session)
-                }
-            }
-            val trustManager: X509TrustManager = trustManagers[0] as X509TrustManager
-            val sslContext = SSLContext.getInstance("SSL")
-            sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
-            val sslSocketFactory = sslContext.socketFactory
-            val client1: OkHttpClient.Builder = OkHttpClient.Builder()
-                .sslSocketFactory(sslSocketFactory, trustManager)
-
-            client1.hostnameVerifier(HostnameVerifier { hostname, session -> true })
-
-
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://13.125.233.161:6443")
-                .client(client1.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://13.125.233.161:6443")
+            .client(client1.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
 
         //retrofit 객체를 통해 인터페이스 생성
@@ -126,11 +187,22 @@ class joinActivity : AppCompatActivity() {
 
 
 
+       //         "/userReg?id=0test&passwd=user1234!&role=50&name=김하은100&contact1=010&contact2=3333&contact3=4444"
+     //val value="/userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
+        val value="userReg"//"userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
+        val id=userID//"test012"//"$userID"
+        val passwd=userpw
+        val name=username
+        val contact1=PhoneNum1
+        val contact2=PhoneNum2
+        val contact3=PhoneNum3
+        val role="50"
+
         val apiKey = "12"
         val appID = "123"
         service.addFriend(
             apiKey, appID,
-            body
+            body, value, id, passwd, role, name, contact1, contact2, contact3
         )?.enqueue(object : Callback<Data> {
             override fun onFailure(call: Call<Data>, t: Throwable) {
                 Log.d(
@@ -144,25 +216,7 @@ class joinActivity : AppCompatActivity() {
 
             }
         })
-
-
-
-        JoinBtn.setOnClickListener {
-            //edittext 값이 다 들어갔는지 확인
-            userID = userIdEdit.text.toString()
-            username = usernameEdit.text.toString()
-            userpw = userPwEdit.text.toString()
-
-            check_id = false
-            check_name = false
-            check_pw = false
-
-
-            userID_check()
-        }
-
     }
-
 
 
     private fun userID_check() {
@@ -219,18 +273,34 @@ class joinActivity : AppCompatActivity() {
         firebaseRef.child("$userID").child("info").child("isAvailable").setValue("none") // 가능한지
         firebaseRef.child("$userID").child("info").child("connection").setValue("false") // 가능한지
         firebaseRef.child("$userID").child("info").child("type").setValue("APP")
+
+
+
+
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("username", username)
         startActivity(intent)
     }
 
+    private fun userPw_check1() {
+        if(userpw!=userpw2)
+        {
+            Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
 
+        }
+        else {
+            send()
+            info()
+        }
+    }
     private fun userPw_check() {
         if (userpw == "")
             Toast.makeText(this, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
         else if (check_id == true) {
             firebaseRef.child("$userID").child("info").child("pw").setValue("$userpw")
             check_pw = true
+           // userPw_check1()
+            send()
             info()
         }
     }
@@ -244,4 +314,5 @@ class joinActivity : AppCompatActivity() {
             userPw_check()
         }
     }
+
 }

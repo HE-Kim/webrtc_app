@@ -16,8 +16,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
-        tools:ignore="Instantiatable">
-        <activity android:name=".ParingActivity"></activity>
+        tools:ignore="Instantiatable"
+        tools:targetApi="m">
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/actions" />
+
+        <activity android:name=".ParingActivity" />
         <activity android:name=".Menubar" />
         <activity
             android:name=".CallActivity"
@@ -27,8 +32,6 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".joinActivity" /> <!-- http, https 어쩌구를 위해 -->
         <activity android:name=".LoadingActivity">
-
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

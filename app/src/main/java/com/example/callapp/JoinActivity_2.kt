@@ -3,7 +3,7 @@ package com.example.callapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_call.*
+//import kotlinx.android.synthetic.main.activity_call.*
 import kotlinx.android.synthetic.main.activity_join_2.*
 import kotlin.math.log
 

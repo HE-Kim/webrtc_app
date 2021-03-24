@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -15,6 +16,21 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import kotlinx.android.synthetic.main.activity_main.*
 import com.google.firebase.database.ktx.database
+import okhttp3.OkHttpClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.*
+import java.io.InputStream
+import java.security.KeyStore
+import java.security.cert.Certificate
+import java.security.cert.CertificateException
+import java.security.cert.CertificateFactory
+import java.security.cert.X509Certificate
+import java.util.*
+import javax.net.ssl.*
 
 var username = ""
 var userpw = ""
@@ -22,7 +38,27 @@ var check_username = false
 var check_userpw = false
 var firebaseRef = Firebase.database.getReference("users")
 var val_PW=false
+var LOG_data: MutableList<String> = mutableListOf<String>("")
+var res=""
 
+interface CometChatFriendsService2 {
+    @Headers(
+        "accept: application/json",
+        "content-type: application/json"
+    )
+    //@POST("/{value}?id={value_id}&passwd=user1234!&role=50&name=김하은100&contact1=010&contact2=3333&contact3=4444")
+    // @POST("/{value}?id={value_id}&passwd={userpw}&role=50&name={name}&contact1={contact1}&contact2={contact2}&contact3={contact3}")
+    @POST("api/appLogin?")
+    fun addFriend(
+        @Header("apikey") apiKey: String,
+        @Header("appid") appID: String,
+       // @Body params: HashMap<String, List<String>>,
+       // @Path("value") value: String,
+        @Query("userid") userid: String,
+        @Query("userpw") userpw: String
+    )
+            : Call<Data1>
+}
 class MainActivity : AppCompatActivity() {
 
     private val permissions =
@@ -76,11 +112,12 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show()
             }
 
-            println("테스트1 check_username : $check_username")
+          //  println("테스트1 check_username : $check_username")
+
+            send()
 
 
-
-            firebaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+           /* firebaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val children = snapshot.children.iterator()
                     var key: String?
@@ -127,7 +164,7 @@ class MainActivity : AppCompatActivity() {
                     println("Failed to read value.")
                 }
             })
-
+*/
             println("테스트2 check_username : $check_username")
 
             // intent()
@@ -137,6 +174,106 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun send() {
+        //   (SSL_Activity.mContext as SSL_Activity).ssl_raw()
+        val cf = CertificateFactory.getInstance("X.509")
+        val caInput: InputStream = resources.openRawResource(R.raw.server)
+        var ca: Certificate? = null
+        try {
+            ca = cf.generateCertificate(caInput)
+            println("ca=" + (ca as X509Certificate?)!!.subjectDN)
+        } catch (e: CertificateException) {
+            e.printStackTrace()
+        } finally {
+            caInput.close()
+        }
+        val keyStoreType = KeyStore.getDefaultType()
+        var keyStore = KeyStore.getInstance(keyStoreType)
+        keyStore.load(null, null)
+        if (ca == null) {
+
+        }
+        keyStore.setCertificateEntry("ca", ca)
+
+
+
+        val trustManagerFactory =
+            TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
+        trustManagerFactory.init(keyStore)
+
+
+        val trustManagers: Array<TrustManager> = trustManagerFactory.trustManagers
+        check(!(trustManagers.size != 1 || trustManagers[0] !is X509TrustManager)) {
+            "Unexpected default trust managers:" + Arrays.toString(
+                trustManagers
+            )
+
+        }
+        val hostnameVerifier = HostnameVerifier { _, session ->
+            HttpsURLConnection.getDefaultHostnameVerifier().run {
+                verify("https://13.125.233.161:6443", session)
+            }
+        }
+        val trustManager: X509TrustManager = trustManagers[0] as X509TrustManager
+        val sslContext = SSLContext.getInstance("SSL")
+        sslContext.init(null, arrayOf<TrustManager>(trustManager), null)
+        val sslSocketFactory = sslContext.socketFactory
+        val client1: OkHttpClient.Builder = OkHttpClient.Builder()
+            .sslSocketFactory(sslSocketFactory, trustManager)
+
+        client1.hostnameVerifier(HostnameVerifier { hostname, session -> true })
+
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://13.125.233.161:6443")
+            .client(client1.build())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+
+        //retrofit 객체를 통해 인터페이스 생성
+        val service = retrofit.create(CometChatFriendsService2::class.java)
+
+        val body = HashMap<String, List<String>>()
+
+
+
+        //         "/userReg?id=0test&passwd=user1234!&role=50&name=김하은100&contact1=010&contact2=3333&contact3=4444"
+        //val value="/userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
+        val value="/api/appLogin"//"userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
+
+        val userpw=userpw
+        val userid=username
+
+
+
+        val apiKey = "12"
+        val appID = "123"
+        service.addFriend(
+            apiKey, appID,
+            userid, userpw
+        )?.enqueue(object : Callback<Data1> {
+            override fun onFailure(call: Call<Data1>, t: Throwable) {
+                Log.d(
+                    "CometChatAPI::", "Failed API call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+
+            override fun onResponse(call: Call<Data1>, response: Response<Data1>) {
+                Log.d("Response:: ", response.body().toString())
+                res=response.body()?.result.toString()
+                println(res)
+                //LOG_data=response.body().toString()
+            }
+        })
+
+        if(res=="1")
+            intent()
+        else
+            Toast_wrong()
+
+    }
 
     private fun Toast_wrong(){
 

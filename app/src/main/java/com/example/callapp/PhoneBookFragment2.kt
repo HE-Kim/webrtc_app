@@ -18,8 +18,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_call.*
-import kotlinx.android.synthetic.main.activity_call.incomingCallTxt
+//import kotlinx.android.synthetic.main.activity_call.*
+//import kotlinx.android.synthetic.main.activity_call.incomingCallTxt
 import kotlinx.android.synthetic.main.fragment_phone_book.*
 
 
@@ -30,10 +30,10 @@ class PhoneBookFragment2 : Fragment() {
     var username = ""
     var friendsUsername = ""
     var firebaseRef = Firebase.database.getReference("users")
-    var listCount = ""
-    private lateinit var phoneBookFragment: PhoneBookFragment
+    var incoming = "false"
+    var res_check1 = "false"
 
-
+    var variable = false
 
     companion object {
         const val TAG: String = "로그"
@@ -138,10 +138,6 @@ class PhoneBookFragment2 : Fragment() {
 
 
 
-                listCount = LIST_MENU.count().toString()
-                val bundle = Bundle()
-                bundle.putString("listCount", listCount)
-                phoneBookFragment.setArguments(bundle)
 
                 initList(listview, adapter)
             }
@@ -171,12 +167,22 @@ class PhoneBookFragment2 : Fragment() {
                     AlertDialog.Builder(it,android.R.style.Theme_DeviceDefault_Light_Dialog_NoActionBar_MinWidth) // TestActivity 부분에는 현재 Activity의 이름 입력.
                         .setMessage(friendsUsername+"님께 통화를 연결하시겠습니까?") // 제목 부분 (직접 작성)
                         .setPositiveButton("통화") { dialog, which ->
+                            incoming = "true"
+                           // res_check1="true"
+                            res_check1="false"
+                            variable = false
 
-                            val intent = Intent(activity, CallActivity::class.java)
-                            intent.putExtra("friendsUsername", friendsUsername)
+                            val intent = Intent(activity, Menubar::class.java)
+                           intent.putExtra("friendsUsername", friendsUsername)
                             intent.putExtra("username", username)
-                            println("테스트 CallActivity username: $username")
+                        //    intent.putExtra("incoming", incoming)
+                            intent.putExtra("check_res", variable)
+
+                            println("테스트 Menubar username: $username")
+                            println("테스트 Menubar incoming: $incoming")
+
                             println("테스트 friend name: $friendsUsername")
+
                             startActivity(intent)
 
 
@@ -201,7 +207,6 @@ class PhoneBookFragment2 : Fragment() {
     }
 
 }
-
 
 
 
