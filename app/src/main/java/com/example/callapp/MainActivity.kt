@@ -265,13 +265,14 @@ class MainActivity : AppCompatActivity() {
                 res=response.body()?.result.toString()
                 println(res)
                 //LOG_data=response.body().toString()
-            }
-        })
-
-        if(res=="1")
+             if(res=="1")
             intent()
-        else
+            else
             Toast_wrong()
+            }
+    })
+
+
 
     }
 
