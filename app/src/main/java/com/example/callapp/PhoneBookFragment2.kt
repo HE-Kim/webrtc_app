@@ -183,7 +183,8 @@ class PhoneBookFragment2 : Fragment() {
 
                             println("테스트 friend name: $friendsUsername")
 
-                            startActivity(intent)
+                            (activity as Menubar).call(friendsUsername, username, variable)
+                        //    startActivity(intent)
 
 
                         }

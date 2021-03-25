@@ -225,7 +225,10 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
         webView.settings.mediaPlaybackRequiresUserGesture = false
         webView.addJavascriptInterface(JavascriptInterface(this), "Android") //자바스크립트 인터페이스 추가
 
+     //   if(check_res)
         loadVideoCall()
+       // else
+     //   initializePeer()
     }
 
     private fun loadVideoCall() {
@@ -236,7 +239,8 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 println("웹뷰: webViewClient ")
-                initializePeer()
+                if(check_res)
+                    initializePeer()
             }
             override fun onReceivedSslError(
                 view: WebView?,
@@ -265,6 +269,14 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
             callJavascriptFunction("javascript:register(\"${username}\")")
             check_res=false
         }
+        else
+        {
+            callJavascriptFunction("javascript:ws.close();")
+          //  callJavascriptFunction("javascript:ws.stop(1);")
+         //   callJavascriptFunction("javascript:webRtcPeer.dispose();")
+
+            callJavascriptFunction("javascript:register(\"${username}\")")
+        }
 
 
 
@@ -290,6 +302,8 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
         if (caller == null || caller == "none") return
 
         friendsUsername=caller
+        fragment_frame.visibility = View.GONE
+        bottom_nav.visibility = View.GONE
         callLayout.visibility = View.VISIBLE
         incomingCallTxt.text = "$caller is calling..."
 
@@ -312,6 +326,8 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
 
     private fun switchToControls() {
         inputLayout.visibility = View.GONE
+//        fragment_frame.visibility = View.GONE
+//        bottom_nav.visibility = View.GONE
         webView.visibility = View.VISIBLE
         callControlLayout.visibility = View.VISIBLE
 
@@ -427,5 +443,14 @@ class Menubar : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelect
         }
 
         return true
+    }
+    fun call(friendsUsername: String, username: String, variable : Boolean) {
+        this.friendsUsername = friendsUsername
+        this.username = username
+        this.check_res = variable
+
+        if (!check_res) {
+            sendCallRequest()
+        }
     }
 }
