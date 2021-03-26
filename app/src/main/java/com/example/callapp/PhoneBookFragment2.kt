@@ -36,6 +36,7 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.*
 import javax.net.ssl.*
+import kotlin.collections.HashMap
 
 interface CometChatFriendsService_pb2 {
     @Headers(
@@ -105,7 +106,7 @@ class PhoneBookFragment2 : Fragment() {
         val editSearch = view.findViewById<View>(R.id.userIdEdit) as EditText
 
 
-        send()
+
 
         val adapter = ArrayAdapter<String>(
             view.context,
@@ -122,7 +123,7 @@ class PhoneBookFragment2 : Fragment() {
         arguments?.let {
             username = it.getString("username").toString()
         }
-
+        send(listview, adapter)
         initDatabase(listview, adapter)
 
 
@@ -182,7 +183,7 @@ class PhoneBookFragment2 : Fragment() {
 
 
     }
-    private fun send() {
+    private fun send(listview: ListView, adapter: ArrayAdapter<String>) {
 
 
 
@@ -249,6 +250,7 @@ class PhoneBookFragment2 : Fragment() {
 
 
 
+
         //         "/userReg?id=0test&passwd=user1234!&role=50&name=김하은100&contact1=010&contact2=3333&contact3=4444"
         //val value="/userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
         val value="userReg"//"userReg?id=$userID&passwd=$userpw&role=50&name=$username&contact1=$PhoneNum1&contact2=$PhoneNum2&contact3=$PhoneNum3"
@@ -269,8 +271,27 @@ class PhoneBookFragment2 : Fragment() {
 
             override fun onResponse(call: Call<Data5>, response: Response<Data5>) {
                 Log.d("Response5:: ", response.body().toString())
-               // res_contacts= response.body()?.contacts?.fstbname.toString()
-                //Log.d("Response5:: ", res_contacts)
+                res_contacts= response.body()?.contacts.toString()
+              //  res_list=response.body()!!.contacts.
+                val friends = response.body()!!.contacts
+                Log.d("Response5:: ", friends.toString())
+             //   Log.d("Response5:: ", friends[0].fidname)
+               // LIST_MENU.clear()
+                for(i in 0 until friends.size step 1)
+                {
+                    if(friends[i].fidname!="null")
+                    {
+                        firebaseRef.child(username).child("info").child("friends").child(friends[i].fidname).setValue(friends[i].fidname)
+
+                    }
+                 //   firebaseRef.child(friends[i].fidname).child("info").child("friends").child(username).setValue(username)
+                  //  firebaseRef.child(username).child("info").child("friends").child("stb1").child("UUID").setValue("11e40088-e0bb-4c05-866e-4021d56ada3e")
+                 //   firebaseRef.child(username).child("info").child("friends").child("stb2").child("UUID").setValue("1cdc9285-a392-4b12-a2f4-d3531a15dfba")
+                  //  LIST_MENU.add(friends[i].fidname)
+                }
+
+                initList(listview, adapter)
+              //  Log.d("Response5:: ", res_contacts[1].toString())
             }
         })
     }

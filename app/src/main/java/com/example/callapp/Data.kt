@@ -33,6 +33,6 @@ data class contacts(
 )
 data class Data4(val result: String, val stb_id: Int)//Accepted)
 //data class Data5(val result: String, val contacts: List<contacts>)
-data class Data5(val result: String, val contacts: List<contacts>)
+data class Data5(val result: String, val contacts: ArrayList<contacts>)
 //data class Data5(val result: String)
 //data class Accepted(val accepted: HashMap<String, contacts>)

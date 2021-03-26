@@ -364,7 +364,7 @@ class ParingActivity : AppCompatActivity() {
 
     private fun initinfo() {
       //  success()
-        firebaseRef.child(pid).child("STB").addListenerForSingleValueEvent(object : ValueEventListener {
+        /*firebaseRef.child(pid).child("STB").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 firebaseRef = Firebase.database.getReference("users")
                 firebaseRef.child("${snapshot.value}").child("info").child("friends").
@@ -381,7 +381,7 @@ class ParingActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 println("Failed to read value.")
             }
-        })
+        })*/
 
 
     }
